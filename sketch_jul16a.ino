@@ -1,11 +1,13 @@
 #include <LiquidCrystal.h>
+#include <ThingSpeak.h>
+
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #include <SoftwareSerial.h>
 float pulse = 0;
 float temp = 0;
 SoftwareSerial ser(9,10);
-String apiKey = "OO707TGA1BLUNN12";
- 
+String apiKey = "LV19FLBXLQMA6CDP";
+String Host="api.thingspeak.com";
 // Variables
 int pulsePin = A0; // Pulse Sensor purple wire connected to analog pin 0
 int blinkPin = 7 ; // pin to blink led at each beat
@@ -129,6 +131,7 @@ if (serialVisual == true) // Code to Make the Serial Monitor Visualizer Work
 Serial.print("* Heart-Beat Happened * "); //ASCII Art Madness
 Serial.print("BPM: ");
 Serial.println(BPM);
+
 }
 else
 {
@@ -249,6 +252,7 @@ BPM = 60000/runningTotal; // how many beats can fit into a minute? that's BPM!
 QS = true; // set Quantified Self flag
 // QS FLAG IS NOT CLEARED INSIDE THIS ISR
 pulse = BPM;
+Serial.println(BPM);
 }
 }
 if (Signal < thresh && Pulse == true)
@@ -267,7 +271,8 @@ P = 512; // set P default
 T = 512; // set T default
 lastBeatTime = sampleCounter; // bring the lastBeatTime up to date
 firstBeat = true; // set these to avoid noise
-secondBeat = false; // when we get the heartbeat back
+secondBeat = false;// when we get the heartbeat back
+
 }
 sei(); // enable interrupts when youre done!
 }// end isr
@@ -309,6 +314,7 @@ float cel = mv/10;
 temp = (cel*9)/5 + 32;
 Serial.print("Temperature:");
 Serial.println(temp);
+
 lcd.clear();
 lcd.setCursor(0,0);
 lcd.print("BPM :");
